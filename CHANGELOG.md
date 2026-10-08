@@ -19,3 +19,10 @@ Todos los cambios relevantes de este repositorio se documentan en este archivo.
   - 'Cliente.java' (validación de licencia y contacto)
   - 'ContratoAlquiler.java' (asociaciones con Cliente/Vehículo y cálculo de montos)
   - 'DetalleContrato.java' (gestión de cargos adicionales)
+
+## 2026-10-07
+### Added
+- Implementación de atributos y métodos en las clases:
+  - 'Sucursal.java' (registro de sucursales, actualización de contacto y consulta de información)
+  - 'Vehiculo.java' (cambio de estado, registro de kilometraje y consulta de disponibilidad)
+  - 'Mantenimiento.java' (asociación con Vehiculo, registro y finalización de mantenimientos)
