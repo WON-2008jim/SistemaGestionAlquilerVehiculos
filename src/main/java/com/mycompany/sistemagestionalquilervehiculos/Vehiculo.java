@@ -18,12 +18,17 @@ public class Vehiculo {
     private double kilometraje;
     private double tarifaDiaria;
     private String estado;
-
+    
+    
+    private CategoriaVehiculo categoria;
+    private Sucursal sucursal;
+    
+    
     public Vehiculo() {
 
     }
 
-    public Vehiculo(int idVehiculo, String marca, String modelo, String vin, String placa, int anio, double kilometraje, double tarifaDiaria, String estado) {
+    public Vehiculo(int idVehiculo, String marca, String modelo, String vin, String placa, int anio, double kilometraje, double tarifaDiaria, String estado, CategoriaVehiculo categoria, Sucursal sucursal) {
         this.idVehiculo = idVehiculo;
         this.marca = marca;
         this.modelo = modelo;
@@ -33,6 +38,8 @@ public class Vehiculo {
         this.kilometraje = kilometraje;
         this.tarifaDiaria = tarifaDiaria;
         this.estado = estado;
+        this.categoria = categoria;
+        this.sucursal = sucursal;
     }
 
     /**
@@ -160,6 +167,34 @@ public class Vehiculo {
     public void setEstado(String estado) {
         this.estado = estado;
     }
+    
+    /**
+     * @return the categoria
+     */
+    public CategoriaVehiculo getCategoria() {
+        return categoria;
+    }
+
+    /**
+     * @param categoria the categoria to set
+     */
+    public void setCategoria(CategoriaVehiculo categoria) {
+        this.categoria = categoria;
+    }
+
+    /**
+     * @return the sucursal
+     */
+    public Sucursal getSucursal() {
+        return sucursal;
+    }
+
+    /**
+     * @param sucursal the sucursal to set
+     */
+    public void setSucursal(Sucursal sucursal) {
+        this.sucursal = sucursal;
+    }
 
     public void cambiarEstado(String nuevoEstado) {
         this.estado = nuevoEstado;
@@ -193,4 +228,5 @@ public class Vehiculo {
                 ", estado='" + estado + '\'' +
                 '}';
     }
+
 }

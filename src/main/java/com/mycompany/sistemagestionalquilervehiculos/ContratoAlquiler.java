@@ -22,13 +22,14 @@ public class ContratoAlquiler {
     // Relaciones / Atributos de Asociación
     private Cliente cliente;
     private Vehiculo vehiculo;
+    private Empleado empleado;
 
     // 1. CONSTRUCTOR VACÍO (Indispensable para Frameworks, ORM y JSON)
     public ContratoAlquiler() {
     }
 
     // 2. CONSTRUCTOR COMPLETO
-    public ContratoAlquiler(int idContrato, Date fechaInicio, Date fechaFin, int diasAlquiler, double montoBase, String estado, Cliente cliente, Vehiculo vehiculo) {
+    public ContratoAlquiler(int idContrato, Date fechaInicio, Date fechaFin, int diasAlquiler, double montoBase, String estado, Cliente cliente, Vehiculo vehiculo, Empleado empleado) {
         this.idContrato = idContrato;
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
@@ -37,6 +38,7 @@ public class ContratoAlquiler {
         this.estado = estado;
         this.cliente = cliente;
         this.vehiculo = vehiculo;
+        this.empleado = empleado;
         this.total = calcularTotal();
     }
 
@@ -62,12 +64,14 @@ public class ContratoAlquiler {
     public String getEstado() { return estado; }
     public void setEstado(String estado) { this.estado = estado; }
 
-    // Getters y Setters de las relaciones
     public Cliente getCliente() { return cliente; }
     public void setCliente(Cliente cliente) { this.cliente = cliente; }
 
     public Vehiculo getVehiculo() { return vehiculo; }
     public void setVehiculo(Vehiculo vehiculo) { this.vehiculo = vehiculo; }
+    
+    public Empleado getEmpleado() { return empleado; }
+public void setEmpleado(Empleado empleado) { this.empleado = empleado; }
 
 
     // --- MÉTODOS DE LÓGICA DE NEGOCIO (UML) ---

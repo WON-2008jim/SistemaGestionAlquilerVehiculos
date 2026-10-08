@@ -105,10 +105,10 @@ public class Factura {
     }
 
     public double calcularTotal() {
-        if (contrato != null) {
-            return contrato.getMontoTotal();
-        }
-        return this.totalFactura;
+    if (contrato != null) {
+        return contrato.getTotal();
+    }
+    return this.totalFactura;
     }
 
     public String imprimirFactura() {
