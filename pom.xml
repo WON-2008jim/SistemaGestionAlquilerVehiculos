@@ -10,4 +10,11 @@
         <maven.compiler.release>26</maven.compiler.release>
         <exec.mainClass>com.mycompany.sistemagestionalquilervehiculos.SistemaGestionAlquilerVehiculos</exec.mainClass>
     </properties>
-</project>
+    <dependencies>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.6.0</version>
+        </dependency>
+    </dependencies>
+</project> 

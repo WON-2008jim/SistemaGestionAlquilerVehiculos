@@ -33,3 +33,10 @@ Todos los cambios relevantes de este repositorio se documentan en este archivo.
   - 'Factura.java' (generación de factura a partir de un contrato de alquiler, cálculo del total tributario e impresión del comprobante contable)
   - 'DetalleFactura.java' (desglose de conceptos individuales y cálculo del subtotal por renglón)
   - 'Empleado.java' (autenticación de credenciales de usuario e ingreso al sistema, y consulta de perfil laboral)
+
+## 2026-10-14
+### Added
+- Configuración de la dependencia del conector JDBC en el archivo 'pom.xml'.
+- Implementación de la clase de conexión para conectar con la base de datos PostgreSQL ('ConexionBD.java').
+- Creación de la base de datos y generación del archivo de respaldo ('alquilerVehiculos.backup').
+- Implementación del paquete de lógica con la creación de 'GestorClientes.java' para operaciones CRUD.
