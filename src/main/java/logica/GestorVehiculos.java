@@ -8,83 +8,150 @@ package logica;
  *
  * @author jimmy
  */
+
 import com.mycompany.sistemagestionalquilervehiculos.Vehiculo;
 import java.util.ArrayList;
 import java.util.List;
+import conexion.ConexionBD;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 public class GestorVehiculos {
-    // Almacenamiento en memoria requerido para el Entregable 2[cite: 10]
-    private List<Vehiculo> listaVehiculos = new ArrayList<>();
 
-    // A - ALTA (Agregar vehículo)
     public boolean agregarVehiculo(Vehiculo vehiculo) {
+        String sql = "INSERT INTO Vehiculo (marca, modelo, vin, placa, anio, kilometraje, tarifa_diaria, estado, id_categoria, id_sucursal) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
-            if (vehiculo == null || vehiculo.getPlaca() == null || vehiculo.getPlaca().trim().isEmpty()) {
-                throw new IllegalArgumentException("El vehículo no es válido o su placa está vacía.");
+            Connection conn = ConexionBD.getInstancia().getConexion();
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                
+                if (vehiculo == null) {
+                    throw new IllegalArgumentException("Error en agregar datos para el vehiculo");
+                }
+               
+                
+                
+                pstmt.setString(1, vehiculo.getMarca());
+                pstmt.setString(2, vehiculo.getModelo());
+                pstmt.setString(3, vehiculo.getVin());
+                pstmt.setString(4, vehiculo.getPlaca());
+                pstmt.setInt(5, vehiculo.getAnio());
+                pstmt.setDouble(6, vehiculo.getKilometraje());
+                pstmt.setDouble(7, vehiculo.getTarifaDiaria());
+                pstmt.setString(8, vehiculo.getEstado());
+                pstmt.setInt(9, vehiculo.getCategoria() != null ? vehiculo.getCategoria().getIdCategoria() : 1);
+                pstmt.setInt(10, vehiculo.getSucursal() != null ? vehiculo.getSucursal().getIdSucursal() : 1);
+                
+                pstmt.executeUpdate();
+                System.out.println("Vehiculo registrado exitosamente en la BD." );
+                return true;
             }
-            // Verificar si ya existe la placa
-            if (buscarVehiculo(vehiculo.getPlaca()) != null) {
-                System.out.println("Error: Ya existe un vehículo registrado con la placa " + vehiculo.getPlaca());
-                return false;
-            }
-            listaVehiculos.add(vehiculo);
-            System.out.println("Vehículo con placa " + vehiculo.getPlaca() + " agregado exitosamente.");
-            return true;
         } catch (Exception e) {
-            System.out.println("Excepción controlada al agregar vehículo: " + e.getMessage());
+            System.out.println("Excepción al registrar vehiculo: " + e.getMessage());
             return false;
         }
     }
 
-    // B - BÚSQUEDA (Buscar por placa)
+    // B - BÚSQUEDA
     public Vehiculo buscarVehiculo(String placa) {
+        String sql = "SELECT * FROM vehiculo WHERE id_vehiculo = ?";
         try {
-            for (Vehiculo v : listaVehiculos) {
-                if (v.getPlaca().equalsIgnoreCase(placa)) {
-                    return v;
+            Connection conn = ConexionBD.getInstancia().getConexion();
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setString(1, placa);
+                try (ResultSet rs = pstmt.executeQuery()) {
+                    if (rs.next()) {
+                        Vehiculo v = new Vehiculo();
+                        v.setIdVehiculo(rs.getInt("id_vehiculo"));
+                        v.setModelo(rs.getString("Modelo"));
+                        v.setVin(rs.getString("Vin"));
+                        v.setPlaca(rs.getString("Placa"));
+                        v.setAnio(rs.getInt("Anio"));
+                        v.setKilometraje(rs.getDouble("Kilometraje"));
+                        v.setTarifaDiaria(rs.getDouble("Tarifa_diaria"));
+                        v.setEstado(rs.getString("Estado"));
+                        
+                   
+                        return v;
+                    }
                 }
             }
-        } catch (Exception e) {
-            System.out.println("Error durante la búsqueda: " + e.getMessage());
+        } catch (SQLException e) {
+            System.out.println("Error al buscar el vehiculo en la BD: " + e.getMessage());
         }
         return null;
     }
 
-    // C - CAMBIO (Modificar datos del vehículo)
-    public boolean modificarVehiculo(String placa, String nuevoEstado, double nuevaTarifa) {
+    // C - CAMBIO
+    public boolean modificarVehiculo(String placa, String nuevoEstado, Double nuevaTarifaDiaria) {
+        String sql = "UPDATE vehiculo SET estado = ?, tarifa_diaria = ? WHERE placa = ?";
         try {
-            Vehiculo v = buscarVehiculo(placa);
-            if (v != null) {
-                v.setEstado(nuevoEstado);
-                v.setTarifaDiaria(nuevaTarifa);
-                System.out.println("Vehículo con placa " + placa + " modificado correctamente.");
-                return true;
+            Connection conn = ConexionBD.getInstancia().getConexion();
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setString(1, nuevoEstado);
+                pstmt.setDouble(2, nuevaTarifaDiaria);
+                pstmt.setString(3, placa);
+                
+                int filas = pstmt.executeUpdate();
+                if (filas > 0) {
+                    System.out.println("Vehiculo actualizado correctamente.");
+                    return true;
+                }
+               
             }
-            System.out.println("Error: No se encontró el vehículo para modificar.");
-            return false;
-        } catch (Exception e) {
-            System.out.println("Excepción controlada al modificar: " + e.getMessage());
+        } catch (SQLException e) {
+            System.out.println("Error: al modificar vehiculo " + e.getMessage());
             return false;
         }
     }
 
-    // D - BAJA (Eliminar vehículo)
+    // D - BAJA
     public boolean eliminarVehiculo(String placa) {
+        String sql = "DELETE FROM vehiculo WHERE placa = ?";
         try {
-            Vehiculo v = buscarVehiculo(placa);
-            if (v != null) {
-                listaVehiculos.remove(v);
-                System.out.println("Vehículo con placa " + placa + " eliminado de la memoria.");
-                return true;
+            Connection conn = ConexionBD.getInstancia().getConexion();
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setString(1, placa);
+                int filas = pstmt.executeUpdate();
+                if (filas > 0) {
+                    System.out.println("Vehiculo de placa No: " + placa + " eliminado de la BD.");
+                    return true;
+                }
+                System.out.println("Error: al eliminar vehiculo no encontrado para eliminar.");
+                return false;
             }
-            System.out.println("Error: Vehículo no encontrado para eliminar.");
-            return false;
-        } catch (Exception e) {
-            System.out.println("Excepción controlada al eliminar: " + e.getMessage());
+        } catch (SQLException e) {
+            System.out.println("Excepción al eliminar vehiculo en la BD: " + e.getMessage());
             return false;
         }
     }
 
-    public List<Vehiculo> getListaVehiculos() {
-        return listaVehiculos;
+    // LISTAR
+    public List<Vehiculo> getListaVehiculo() {
+        List<Vehiculo> listaVehiculo = new ArrayList<>();
+        String sql = "SELECT * FROM vehiculo";
+        try {
+            Connection conn = ConexionBD.getInstancia().getConexion();
+            try (PreparedStatement pstmt = conn.prepareStatement(sql);
+                 ResultSet rs = pstmt.executeQuery()) {
+                
+                while (rs.next()) {
+                    Vehiculo v = new Vehiculo();
+                   v.setIdVehiculo(rs.getInt("id_vehiculo"));
+                   v.setModelo(rs.getString("Modelo"));
+                   v.setVin(rs.getString("Vin"));
+                   v.setPlaca(rs.getString("Placa"));
+                   v.setAnio(rs.getInt("Anio"));
+                   v.setKilometraje(rs.getDouble("Kilometraje"));
+                   v.setTarifaDiaria(rs.getDouble("Tarifa_diaria"));
+                   v.setEstado(rs.getString("Estado"));
+                    listaVehiculo.add(v);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al obtener la lista de vehiculo: " + e.getMessage());
+        }
+        return listaVehiculo;
     }
 }
+    

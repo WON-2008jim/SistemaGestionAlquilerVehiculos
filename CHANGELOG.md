@@ -40,3 +40,8 @@ Todos los cambios relevantes de este repositorio se documentan en este archivo.
 - Implementación de la clase de conexión para conectar con la base de datos PostgreSQL ('ConexionBD.java').
 - Creación de la base de datos y generación del archivo de respaldo ('alquilerVehiculos.backup').
 - Implementación del paquete de lógica con la creación de 'GestorClientes.java' para operaciones CRUD.
+
+## 2026-10-22
+### Added
+- Creacion gestor mantenimiento.
+- Creacion gestor vehiculo.
