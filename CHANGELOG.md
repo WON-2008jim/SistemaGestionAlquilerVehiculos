@@ -45,3 +45,9 @@ Todos los cambios relevantes de este repositorio se documentan en este archivo.
 ### Added
 - Creacion gestor mantenimiento.
 - Creacion gestor vehiculo.
+
+## 2026-10-26
+### Added
+Implementación de atributos y métodos en las clases:
+-GestorContratos.java’ (alta de contratos con validación de cliente, vehículo, empleado, fechas, días y monto; búsqueda por id y por cliente; modificación de fecha fin, días y estado; cambio de estado; baja y listado de contratos en la BD)
+-GestorFacturas.java’ (alta de facturas con validación de número de serie único y contrato asociado; cálculo automático del total a partir del contrato; búsqueda por número de serie, por id y por contrato; modificación de fecha de emisión y total; baja y listado de facturas en la BD)
