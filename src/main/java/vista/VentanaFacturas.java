@@ -2,20 +2,20 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package com.mycompany.sistemagestionalquilervehiculos;
+package vista;
 
 /**
  *
  * @author jimmy
  */
-public class Diseño extends javax.swing.JFrame {
+public class VentanaFacturas extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Diseño.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(VentanaFacturas.class.getName());
 
     /**
-     * Creates new form Diseño
+     * Creates new form VentanaFacturas
      */
-    public Diseño() {
+    public VentanaFacturas() {
         initComponents();
     }
 
@@ -34,11 +34,11 @@ public class Diseño extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 880, Short.MAX_VALUE)
+            .addGap(0, 400, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 559, Short.MAX_VALUE)
+            .addGap(0, 300, Short.MAX_VALUE)
         );
 
         pack();
@@ -66,7 +66,7 @@ public class Diseño extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new Diseño().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new VentanaFacturas().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
