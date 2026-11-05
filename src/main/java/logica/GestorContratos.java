@@ -18,11 +18,84 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.swing.table.DefaultTableModel;
 
 public class GestorContratos {
+    
+    public void cargarTablaContratos(DefaultTableModel modeloTabla) {
+        modeloTabla.setRowCount(0); // Limpiar la tabla antes de cargar
+        String sql = "SELECT c.id_contrato, cli.nombre AS cliente, v.marca || ' - ' || v.modelo || ' (' || v.placa || ')' AS vehiculo, " +
+                     "e.nombre AS empleado, c.fecha_inicio, c.fecha_fin, c.dias_alquiler, c.total, c.estado " +
+                     "FROM contrato_alquiler c " +
+                     "JOIN cliente cli ON c.id_cliente = cli.id_cliente " +
+                     "JOIN vehiculo v ON c.id_vehiculo = v.id_vehiculo " +
+                     "JOIN empleado e ON c.id_empleado = e.id_empleado";
+        
+        try {
+            Connection conn = ConexionBD.getInstancia().getConexion();
+            try (Statement stmt = conn.createStatement();
+                 ResultSet rs = stmt.executeQuery(sql)) {
+                
+                while (rs.next()) {
+                    modeloTabla.addRow(new Object[]{
+                        rs.getInt("id_contrato"),
+                        rs.getString("cliente"),
+                        rs.getString("vehiculo"),
+                        rs.getString("empleado"),
+                        rs.getDate("fecha_inicio"),
+                        rs.getDate("fecha_fin"),
+                        rs.getInt("dias_alquiler"),
+                        String.format("%.2f", rs.getDouble("total")),
+                        rs.getString("estado")
+                    });
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al cargar la tabla de contratos: " + e.getMessage());
+        }
+    }
+    public int[] obtenerEstadisticasContratos() {
+        int contratosActivos = 0;
+        double ingresosTotales = 0.0;
+        int proximasFinalizaciones = 0;
+        
+        String sql = "SELECT estado, total, fecha_fin FROM contrato_alquiler";
+        try {
+            Connection conn = ConexionBD.getInstancia().getConexion();
+            try (Statement stmt = conn.createStatement();
+                 ResultSet rs = stmt.executeQuery(sql)) {
+                
+                java.time.LocalDate hoy = java.time.LocalDate.now();
+                
+                while (rs.next()) {
+                    String estado = rs.getString("estado");
+                    double total = rs.getDouble("total");
+                    java.sql.Date fechaFin = rs.getDate("fecha_fin");
+                    
+                    if ("Activo".equalsIgnoreCase(estado) || "Reservado".equalsIgnoreCase(estado)) {
+                        contratosActivos++;
+                        ingresosTotales += total;
+                    }
+                    
+                    if (fechaFin != null && ("Activo".equalsIgnoreCase(estado))) {
+                        java.time.LocalDate fFin = fechaFin.toLocalDate();
+                        long diasRestantes = java.time.temporal.ChronoUnit.DAYS.between(hoy, fFin);
+                        if (diasRestantes >= 0 && diasRestantes <= 3) {
+                            proximasFinalizaciones++;
+                        }
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al obtener estadísticas: " + e.getMessage());
+        }
+        
+        return new int[] { contratosActivos, (int) ingresosTotales, proximasFinalizaciones };
+    }
 
     // A - ALTA
     public boolean agregarContrato(ContratoAlquiler contrato) {
@@ -58,6 +131,11 @@ public class GestorContratos {
                 pstmt.setString(9, contrato.getEstado() == null ? "Activo" : contrato.getEstado());
 
                 pstmt.executeUpdate();
+                String sqlUpdateVehiculo = "UPDATE vehiculo SET estado = 'Ocupado' WHERE id_vehiculo = ?";
+                try (PreparedStatement pstmtVeh = conn.prepareStatement(sqlUpdateVehiculo)) {
+                    pstmtVeh.setInt(1, contrato.getVehiculo().getIdVehiculo());
+                    pstmtVeh.executeUpdate();
+                }
 
                 try (ResultSet keys = pstmt.getGeneratedKeys()) {
                     if (keys.next()) {
@@ -139,20 +217,31 @@ public class GestorContratos {
 
     // C - CAMBIO DE ESTADO (por ejemplo, finalizar el contrato)
     public boolean cambiarEstadoContrato(int idContrato, String nuevoEstado) {
-        String sql = "UPDATE contrato_alquiler SET estado = ? WHERE id_contrato = ?";
+        String sqlContrato = "UPDATE contrato_alquiler SET estado = ? WHERE id_contrato = ?";
+        String sqlVehiculo = "UPDATE vehiculo SET estado = 'Disponible' WHERE id_vehiculo = (SELECT id_vehiculo FROM contrato_alquiler WHERE id_contrato = ?)";
+        
         try {
             Connection conn = ConexionBD.getInstancia().getConexion();
-            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                pstmt.setString(1, nuevoEstado);
-                pstmt.setInt(2, idContrato);
-
-                int filas = pstmt.executeUpdate();
-                if (filas > 0) {
-                    System.out.println("Estado del contrato " + idContrato + " cambiado a " + nuevoEstado + ".");
-                    return true;
+            conn.setAutoCommit(false); // Transacción segura
+            
+            try (PreparedStatement pstmt1 = conn.prepareStatement(sqlContrato);
+                 PreparedStatement pstmt2 = conn.prepareStatement(sqlVehiculo)) {
+                
+                pstmt1.setString(1, nuevoEstado);
+                pstmt1.setInt(2, idContrato);
+                pstmt1.executeUpdate();
+                
+                if ("Finalizado".equalsIgnoreCase(nuevoEstado)) {
+                    pstmt2.setInt(1, idContrato);
+                    pstmt2.executeUpdate();
                 }
-                System.out.println("Error: Contrato no encontrado para cambiar estado.");
-                return false;
+                
+                conn.commit();
+                System.out.println("Contrato " + idContrato + " actualizado a " + nuevoEstado);
+                return true;
+            } catch (SQLException e) {
+                conn.rollback();
+                throw e;
             }
         } catch (SQLException e) {
             System.out.println("Excepción al cambiar estado del contrato: " + e.getMessage());
@@ -162,21 +251,34 @@ public class GestorContratos {
 
     // D - BAJA
     public boolean eliminarContrato(int idContrato) {
-        String sql = "DELETE FROM contrato_alquiler WHERE id_contrato = ?";
+        String sqlVehiculo = "UPDATE vehiculo SET estado = 'Disponible' WHERE id_vehiculo = (SELECT id_vehiculo FROM contrato_alquiler WHERE id_contrato = ?)";
+        String sqlDelete = "DELETE FROM contrato_alquiler WHERE id_contrato = ?";
+        
         try {
             Connection conn = ConexionBD.getInstancia().getConexion();
-            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                pstmt.setInt(1, idContrato);
-                int filas = pstmt.executeUpdate();
+            conn.setAutoCommit(false);
+            
+            try (PreparedStatement pstmt1 = conn.prepareStatement(sqlVehiculo);
+                 PreparedStatement pstmt2 = conn.prepareStatement(sqlDelete)) {
+                
+                pstmt1.setInt(1, idContrato);
+                pstmt1.executeUpdate();
+                
+                pstmt2.setInt(1, idContrato);
+                int filas = pstmt2.executeUpdate();
+                
+                conn.commit();
                 if (filas > 0) {
-                    System.out.println("Contrato " + idContrato + " eliminado de la BD.");
+                    System.out.println("Contrato " + idContrato + " eliminado y vehículo liberado.");
                     return true;
                 }
-                System.out.println("Error: Contrato no encontrado para eliminar.");
                 return false;
+            } catch (SQLException e) {
+                conn.rollback();
+                throw e;
             }
         } catch (SQLException e) {
-            System.out.println("Excepción al eliminar contrato en la BD: " + e.getMessage());
+            System.out.println("Excepción al eliminar contrato: " + e.getMessage());
             return false;
         }
     }
@@ -226,4 +328,26 @@ public class GestorContratos {
 
         return c;
     }
+    public boolean renovarContrato(int idContrato, Date nuevaFechaFin, int nuevosDias, double nuevoTotal) {
+    String sql = "UPDATE contrato_alquiler SET fecha_fin = ?, dias_alquiler = ?, total = ?, estado = 'Activo' WHERE id_contrato = ?";
+    try {
+        Connection conn = ConexionBD.getInstancia().getConexion();
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setDate(1, new java.sql.Date(nuevaFechaFin.getTime()));
+            pstmt.setInt(2, nuevosDias);
+            pstmt.setDouble(3, nuevoTotal);
+            pstmt.setInt(4, idContrato);
+
+            int filas = pstmt.executeUpdate();
+            if (filas > 0) {
+                System.out.println("Contrato " + idContrato + " renovado exitosamente.");
+                return true;
+            }
+            return false;
+        }
+    } catch (SQLException e) {
+        System.out.println("Excepción al renovar contrato: " + e.getMessage());
+        return false;
+    }
+}
 }

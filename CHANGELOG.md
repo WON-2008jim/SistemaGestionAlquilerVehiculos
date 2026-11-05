@@ -11,6 +11,14 @@ Todos los cambios relevantes de este repositorio se documentan en este archivo.
 - Clase ejecutable `Main.java`.
 - Documentación inicial del proyecto ('README.md' y 'CHANGELOG.md').
 
+## 2026-11-05
+### Added
+-Mejoras en Gestores y clases
+-Cambios en BD
+-integracion de libreria iText en pom
+-Formularios de apartado operaciones
+
+
 ## 2026-10-05
 
 ### Added
@@ -62,3 +70,11 @@ Implementación de atributos y métodos en las clases:
 ### Added
 -Formularios de apartado gestion
 -Creacion de GestorSucursal y mejora en Gestores
+
+## 2026-11-05
+### Added
+-Mejoras en Gestores y clases
+-Cambios en BD
+-integracion de libreria iText en pom
+-Formularios de apartado operaciones
+

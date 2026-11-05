@@ -225,16 +225,22 @@ public class VentanaEmpleados extends javax.swing.JFrame {
         jLabel7.setText("ID Asignado:");
 
         txtNombre.setBackground(new java.awt.Color(51, 51, 51));
+        txtNombre.setForeground(new java.awt.Color(255, 255, 255));
 
         txtRol.setBackground(new java.awt.Color(51, 51, 51));
+        txtRol.setForeground(new java.awt.Color(255, 255, 255));
 
         txtTelefono.setBackground(new java.awt.Color(51, 51, 51));
+        txtTelefono.setForeground(new java.awt.Color(255, 255, 255));
 
         txtUser.setBackground(new java.awt.Color(51, 51, 51));
+        txtUser.setForeground(new java.awt.Color(255, 255, 255));
 
         txtContra.setBackground(new java.awt.Color(51, 51, 51));
+        txtContra.setForeground(new java.awt.Color(255, 255, 255));
 
         cmbSucursal.setBackground(new java.awt.Color(51, 51, 51));
+        cmbSucursal.setForeground(new java.awt.Color(255, 255, 255));
 
         lblID.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblID.setForeground(new java.awt.Color(255, 255, 255));

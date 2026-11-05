@@ -144,14 +144,6 @@ public class Cliente {
 
     @Override
     public String toString() {
-        return "Cliente{" +
-                "idCliente=" + idCliente +
-                ", nombre='" + nombre + '\'' +
-                ", dpi='" + dpi + '\'' +
-                ", nit='" + nit + '\'' +
-                ", telefono='" + telefono + '\'' +
-                ", correo='" + correo + '\'' +
-                ", numLicencia='" + numLicencia + '\'' +
-                '}';
+        return nombre; // o el atributo que almacene su nombre real
     }
 }

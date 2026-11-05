@@ -141,12 +141,6 @@ public class Empleado {
 
     @Override
     public String toString() {
-        return "Empleado{" +
-                "idEmpleado=" + idEmpleado +
-                ", nombre='" + nombre + '\'' +
-                ", rol='" + rol + '\'' +
-                ", usuario='" + usuario + '\'' +
-                ", idSucursal=" + idSucursal +
-                '}';
+        return nombre; // o el atributo que almacene su nombre real
     }
 }
