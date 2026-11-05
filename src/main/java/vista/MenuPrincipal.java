@@ -4,6 +4,9 @@
  */
 package vista;
 
+import javax.swing.JFrame;
+import java.awt.Image;
+import javax.swing.ImageIcon;
 /**
  *
  * @author jimmy
@@ -17,6 +20,42 @@ public class MenuPrincipal extends javax.swing.JFrame {
      */
     public MenuPrincipal() {
         initComponents();
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        ImageIcon iconoArchivo = escalarIcono("/icons/archivo.png", 18, 18);
+        jMenu1.setIcon(iconoArchivo);
+        jMenu1.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT); // Texto a la derecha del icono
+        jMenu1.setIconTextGap(8);
+        jMenu2.setIcon(escalarIcono("/icons/gestion.png", 18, 18));
+        jMenu3.setIcon(escalarIcono("/icons/operaciones.png", 18, 18)); // O el icono que prefieras para Operaciones
+        jMenu4.setIcon(escalarIcono("/icons/ayuda.png", 18, 18));
+        
+        jMenuItem1.setIcon(escalarIcono("/icons/cerrar sesion.png", 16, 16)); // Cerrar Sesión
+        jMenuItem2.setIcon(escalarIcono("/icons/salir.png", 16, 16));         // Salir
+        jMenuItem3.setIcon(escalarIcono("/icons/clientes.png", 16, 16));               // Clientes
+        jMenuItem4.setIcon(escalarIcono("/icons/vehiculo y categorias.png", 16, 16)); // Vehículo y Categorías
+        jMenuItem5.setIcon(escalarIcono("/icons/sucursales.png", 16, 16));           // Sucursales
+        jMenuItem6.setIcon(escalarIcono("/icons/empleados.png", 16, 16));             // Empleados
+        jMenuItem7.setIcon(escalarIcono("/icons/contratos de alquiler.png", 16, 16)); // Contratos de Alquiler
+        jMenuItem8.setIcon(escalarIcono("/icons/mantenimiento.png", 16, 16));         // Mantenimientos
+        jMenuItem9.setIcon(escalarIcono("/icons/facturacion.png", 16, 16));           // Facturación
+        jMenuItem10.setIcon(escalarIcono("/icons/manual del Usuario.png", 16, 16));
+    }
+    
+    private ImageIcon escalarIcono(String rutaRelativa, int ancho, int alto) {
+        try {
+            // Carga el recurso desde src/main/resources/icons/...
+            java.net.URL imgURL = getClass().getResource(rutaRelativa);
+            if (imgURL != null) {
+                ImageIcon iconoOriginal = new ImageIcon(imgURL);
+                Image imagenEscalada = iconoOriginal.getImage().getScaledInstance(ancho, alto, Image.SCALE_SMOOTH);
+                return new ImageIcon(imagenEscalada);
+            } else {
+                System.err.println("No se pudo encontrar el archivo de icono: " + rutaRelativa);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**
@@ -28,17 +67,132 @@ public class MenuPrincipal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
+        jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
+        jMenuItem5 = new javax.swing.JMenuItem();
+        jMenuItem6 = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
+        jMenuItem7 = new javax.swing.JMenuItem();
+        jMenuItem8 = new javax.swing.JMenuItem();
+        jMenuItem9 = new javax.swing.JMenuItem();
+        jMenu4 = new javax.swing.JMenu();
+        jMenuItem10 = new javax.swing.JMenuItem();
+        jMenu5 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("MENU PRIINCIPAL");
 
-        jMenu1.setText("File");
+        jPanel1.setBackground(new java.awt.Color(30, 34, 46));
+        jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1589, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 497, Short.MAX_VALUE)
+        );
+
+        jMenuBar1.setBackground(new java.awt.Color(204, 204, 0));
+        jMenuBar1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jMenuBar1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jMenuBar1.setOpaque(true);
+        jMenuBar1.setPreferredSize(new java.awt.Dimension(253, 33));
+
+        jMenu1.setBackground(new java.awt.Color(30, 34, 46));
+        jMenu1.setForeground(new java.awt.Color(51, 153, 0));
+        jMenu1.setText("Archivo");
+        jMenu1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jMenu1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jMenu1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jMenu1.setOpaque(true);
+        jMenu1.setPreferredSize(new java.awt.Dimension(90, 40));
+
+        jMenuItem1.setText("Cerrar Sesion");
+        jMenuItem1.addActionListener(this::jMenuItem1ActionPerformed);
+        jMenu1.add(jMenuItem1);
+
+        jMenuItem2.setText("Salir");
+        jMenuItem2.addActionListener(this::jMenuItem2ActionPerformed);
+        jMenu1.add(jMenuItem2);
+
         jMenuBar1.add(jMenu1);
 
-        jMenu2.setText("Edit");
+        jMenu2.setBackground(new java.awt.Color(30, 34, 46));
+        jMenu2.setForeground(new java.awt.Color(51, 153, 0));
+        jMenu2.setText("Gestion");
+        jMenu2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jMenu2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jMenu2.setOpaque(true);
+        jMenu2.setPreferredSize(new java.awt.Dimension(79, 22));
+
+        jMenuItem3.setText("Clientes");
+        jMenuItem3.addActionListener(this::jMenuItem3ActionPerformed);
+        jMenu2.add(jMenuItem3);
+
+        jMenuItem4.setText("Vehiculo y Categorias");
+        jMenuItem4.addActionListener(this::jMenuItem4ActionPerformed);
+        jMenu2.add(jMenuItem4);
+
+        jMenuItem5.setText("Sucursales");
+        jMenuItem5.addActionListener(this::jMenuItem5ActionPerformed);
+        jMenu2.add(jMenuItem5);
+
+        jMenuItem6.setText("Empleados");
+        jMenuItem6.addActionListener(this::jMenuItem6ActionPerformed);
+        jMenu2.add(jMenuItem6);
+
         jMenuBar1.add(jMenu2);
+
+        jMenu3.setBackground(new java.awt.Color(30, 34, 46));
+        jMenu3.setForeground(new java.awt.Color(51, 153, 0));
+        jMenu3.setText("Operaciones");
+        jMenu3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jMenu3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jMenu3.setOpaque(true);
+        jMenu3.setPreferredSize(new java.awt.Dimension(105, 22));
+
+        jMenuItem7.setText("Contratos de Alquiler");
+        jMenuItem7.addActionListener(this::jMenuItem7ActionPerformed);
+        jMenu3.add(jMenuItem7);
+
+        jMenuItem8.setText("Mantenimientos");
+        jMenuItem8.addActionListener(this::jMenuItem8ActionPerformed);
+        jMenu3.add(jMenuItem8);
+
+        jMenuItem9.setText("Facturacion");
+        jMenuItem9.addActionListener(this::jMenuItem9ActionPerformed);
+        jMenu3.add(jMenuItem9);
+
+        jMenuBar1.add(jMenu3);
+
+        jMenu4.setBackground(new java.awt.Color(30, 34, 46));
+        jMenu4.setForeground(new java.awt.Color(51, 153, 0));
+        jMenu4.setText("Ayuda");
+        jMenu4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jMenu4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jMenu4.setOpaque(true);
+        jMenu4.setPreferredSize(new java.awt.Dimension(70, 22));
+
+        jMenuItem10.setText("Manual de Usuario");
+        jMenu4.add(jMenuItem10);
+
+        jMenuBar1.add(jMenu4);
+
+        jMenu5.setBackground(new java.awt.Color(30, 34, 46));
+        jMenu5.setMinimumSize(new java.awt.Dimension(900, 6));
+        jMenu5.setOpaque(true);
+        jMenu5.setPreferredSize(new java.awt.Dimension(1200, 6));
+        jMenuBar1.add(jMenu5);
 
         setJMenuBar(jMenuBar1);
 
@@ -46,15 +200,68 @@ public class MenuPrincipal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 918, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 521, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        login ventanaLogin = new login();
+        ventanaLogin.setVisible(true);
+        ventanaLogin.setLocationRelativeTo(null);
+        this.dispose();
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        VentanaClientes ventanaCli = new VentanaClientes();
+        ventanaCli.setVisible(true);
+        ventanaCli.setLocationRelativeTo(null);
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        VentanaVehiculos ventanaVeh = new VentanaVehiculos();
+        ventanaVeh.setVisible(true);
+        ventanaVeh.setLocationRelativeTo(null);
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+        VentanaSucursales ventanaSuc = new VentanaSucursales();
+        ventanaSuc.setVisible(true);
+        ventanaSuc.setLocationRelativeTo(null);
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
+
+    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+        VentanaEmpleados ventanaEmp = new VentanaEmpleados();
+        ventanaEmp.setVisible(true);
+        ventanaEmp.setLocationRelativeTo(null);
+    }//GEN-LAST:event_jMenuItem6ActionPerformed
+
+    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
+        VentanaContratos ventanaCon = new VentanaContratos();
+        ventanaCon.setVisible(true);
+        ventanaCon.setLocationRelativeTo(null);
+    }//GEN-LAST:event_jMenuItem7ActionPerformed
+
+    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
+        VentanaMantenimiento ventanaMant = new VentanaMantenimiento();
+        ventanaMant.setVisible(true);
+        ventanaMant.setLocationRelativeTo(null);
+    }//GEN-LAST:event_jMenuItem8ActionPerformed
+
+    private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
+        VentanaFacturas ventanaFac = new VentanaFacturas();
+        ventanaFac.setVisible(true);
+        ventanaFac.setLocationRelativeTo(null);
+    }//GEN-LAST:event_jMenuItem9ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -84,6 +291,21 @@ public class MenuPrincipal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
+    private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem10;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JMenuItem jMenuItem7;
+    private javax.swing.JMenuItem jMenuItem8;
+    private javax.swing.JMenuItem jMenuItem9;
+    private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }
+

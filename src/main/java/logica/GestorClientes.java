@@ -170,4 +170,42 @@ public class GestorClientes {
         c.setNumLicencia(rs.getString("num_licencia"));
         return c;
     }
-}
+    
+    public void cargarTablaClientes(javax.swing.table.DefaultTableModel modelo) {
+        modelo.setRowCount(0); // Limpiar filas anteriores
+        List<Cliente> lista = getListaClientes();
+        for (Cliente c : lista) {
+            Object[] fila = {
+                c.getIdCliente(),
+                c.getNombre(),
+                c.getDpi(),
+                c.getNit(),
+                c.getTelefono(),
+                c.getCorreo(),
+                c.getNumLicencia()
+            };
+            modelo.addRow(fila);
+        }
+    }
+
+    // Método para actualizar todos los campos del cliente desde la interfaz
+    public boolean actualizarClienteCompleto(Cliente c) {
+        String sql = "UPDATE cliente SET nombre = ?, nit = ?, telefono = ?, correo = ?, num_licencia = ? WHERE dpi = ?";
+        try {
+            Connection conn = ConexionBD.getInstancia().getConexion();
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setString(1, c.getNombre());
+                pstmt.setString(2, c.getNit());
+                pstmt.setString(3, c.getTelefono());
+                pstmt.setString(4, c.getCorreo());
+                pstmt.setString(5, c.getNumLicencia());
+                pstmt.setString(6, c.getDpi());
+            
+                return pstmt.executeUpdate() > 0;
+                }
+            } catch (SQLException e) {
+                System.out.println("Excepción al actualizar cliente: " + e.getMessage());
+                return false;
+            }
+        }
+    }

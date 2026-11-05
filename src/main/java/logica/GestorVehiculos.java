@@ -183,5 +183,50 @@ public class GestorVehiculos {
 
         return v;
     }
+    
+    public void cargarTablaVehiculos(javax.swing.table.DefaultTableModel modelo) {
+        modelo.setRowCount(0); // Limpiar filas anteriores
+        List<Vehiculo> lista = getListaVehiculos();
+        for (Vehiculo v : lista) {
+            Object[] fila = {
+                v.getIdVehiculo(),
+                v.getMarca(),
+                v.getModelo(),
+                v.getPlaca(),
+                v.getVin(),
+                v.getAnio(),
+                v.getKilometraje(),
+                v.getTarifaDiaria(),
+                v.getEstado(),
+                v.getCategoria() != null ? v.getCategoria().getIdCategoria() : "",
+                v.getSucursal() != null ? v.getSucursal().getIdSucursal() : ""
+            };
+            modelo.addRow(fila);
+        }
+    }
+
+    public boolean actualizarVehiculoCompleto(Vehiculo v) {
+        String sql = "UPDATE vehiculo SET marca = ?, modelo = ?, vin = ?, anio = ?, kilometraje = ?, tarifa_diaria = ?, estado = ?, id_categoria = ?, id_sucursal = ? WHERE placa = ?";
+        try {
+            Connection conn = ConexionBD.getInstancia().getConexion();
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setString(1, v.getMarca());
+                pstmt.setString(2, v.getModelo());
+                pstmt.setString(3, v.getVin());
+                pstmt.setInt(4, v.getAnio());
+                pstmt.setDouble(5, v.getKilometraje());
+                pstmt.setDouble(6, v.getTarifaDiaria());
+                pstmt.setString(7, v.getEstado());
+                pstmt.setInt(8, v.getCategoria() != null ? v.getCategoria().getIdCategoria() : 1);
+                pstmt.setInt(9, v.getSucursal() != null ? v.getSucursal().getIdSucursal() : 1);
+                pstmt.setString(10, v.getPlaca());
+                
+                return pstmt.executeUpdate() > 0;
+            }
+        } catch (SQLException e) {
+            System.out.println("Excepción al actualizar vehículo: " + e.getMessage());
+            return false;
+        }
+    }
 }
     

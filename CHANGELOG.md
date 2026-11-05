@@ -57,3 +57,8 @@ Implementación de atributos y métodos en las clases:
 -mejora en gestores
 -Añadidura de carpeta resources
 -Paquete vista con formularios
+
+## 2026-11-05
+### Added
+-Formularios de apartado gestion
+-Creacion de GestorSucursal y mejora en Gestores

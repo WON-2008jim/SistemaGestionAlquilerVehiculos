@@ -12,19 +12,22 @@ public class Empleado {
     private int idEmpleado;
     private String nombre;
     private String rol;
+    private String telefono;
     private String usuario;
     private String clave;
+    private int idSucursal;
 
     public Empleado() {
-
     }
 
-    public Empleado(int idEmpleado, String nombre, String rol, String usuario, String clave) {
+    public Empleado(int idEmpleado, String nombre, String rol, String telefono, String usuario, String clave, int idSucursal) {
         this.idEmpleado = idEmpleado;
         this.nombre = nombre;
         this.rol = rol;
+        this.telefono = telefono;
         this.usuario = usuario;
         this.clave = clave;
+        this.idSucursal = idSucursal;
     }
 
     /**
@@ -70,6 +73,20 @@ public class Empleado {
     }
 
     /**
+     * @return the telefono
+     */
+    public String getTelefono() {
+        return telefono;
+    }
+
+    /**
+     * @param telefono the telefono to set
+     */
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    /**
      * @return the usuario
      */
     public String getUsuario() {
@@ -97,6 +114,20 @@ public class Empleado {
         this.clave = clave;
     }
 
+    /**
+     * @return the idSucursal
+     */
+    public int getIdSucursal() {
+        return idSucursal;
+    }
+
+    /**
+     * @param idSucursal the idSucursal to set
+     */
+    public void setIdSucursal(int idSucursal) {
+        this.idSucursal = idSucursal;
+    }
+
     public boolean autenticar(String usuario, String clave) {
         if (this.usuario != null && this.clave != null) {
             return this.usuario.equals(usuario) && this.clave.equals(clave);
@@ -105,7 +136,7 @@ public class Empleado {
     }
 
     public String obtenerPerfil() {
-        return "ID: " + idEmpleado + " | Nombre: " + nombre + " | Rol: " + rol + " | Usuario: " + usuario;
+        return "ID: " + idEmpleado + " | Nombre: " + nombre + " | Rol: " + rol + " | Usuario: " + usuario + " | Sucursal: " + idSucursal;
     }
 
     @Override
@@ -115,6 +146,7 @@ public class Empleado {
                 ", nombre='" + nombre + '\'' +
                 ", rol='" + rol + '\'' +
                 ", usuario='" + usuario + '\'' +
+                ", idSucursal=" + idSucursal +
                 '}';
     }
 }
