@@ -184,6 +184,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jMenu4.setPreferredSize(new java.awt.Dimension(70, 22));
 
         jMenuItem10.setText("Manual de Usuario");
+        jMenuItem10.addActionListener(this::jMenuItem10ActionPerformed);
         jMenu4.add(jMenuItem10);
 
         jMenuBar1.add(jMenu4);
@@ -262,6 +263,26 @@ public class MenuPrincipal extends javax.swing.JFrame {
         ventanaFac.setVisible(true);
         ventanaFac.setLocationRelativeTo(null);
     }//GEN-LAST:event_jMenuItem9ActionPerformed
+
+    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
+        try {
+            java.io.File archivoManual = new java.io.File("docs/Manual de Usuario.pdf");
+
+            if (archivoManual.exists()) {
+                if (java.awt.Desktop.isDesktopSupported()) {
+                    java.awt.Desktop.getDesktop().open(archivoManual);
+                }
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this, 
+                    "No se encontró el Manual de Usuario en la ruta: " + archivoManual.getAbsolutePath(), 
+                    "Archivo no encontrado", javax.swing.JOptionPane.WARNING_MESSAGE);
+            }
+        } catch (Exception e) {
+            javax.swing.JOptionPane.showMessageDialog(this, 
+                "Error al abrir el manual: " + e.getMessage(), 
+                "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jMenuItem10ActionPerformed
 
     /**
      * @param args the command line arguments
