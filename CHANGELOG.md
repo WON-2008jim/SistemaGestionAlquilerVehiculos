@@ -78,3 +78,8 @@ Implementación de atributos y métodos en las clases:
 -integracion de libreria iText en pom
 -Formularios de apartado operaciones
 
+## 2026-11-05
+### Added
+- Visual de Facturación
+- .sql de la BD
+
